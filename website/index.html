@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Indheo — New Single</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      background: #000;
+      color: #fff;
+      font-family: 'Oswald', sans-serif;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      overflow: hidden;
+    }
+
+    /* subtle noise/grain overlay */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.06'/%3E%3C/svg%3E");
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .container {
+      position: relative;
+      z-index: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 2rem;
+      padding: 2rem;
+    }
+
+    .logo img {
+      max-width: min(500px, 85vw);
+      height: auto;
+      filter: drop-shadow(0 0 30px rgba(255,255,255,0.08));
+    }
+
+    .tagline {
+      font-size: clamp(0.9rem, 2.5vw, 1.2rem);
+      letter-spacing: 0.35em;
+      text-transform: uppercase;
+      color: #888;
+    }
+
+    /* Countdown */
+    .countdown {
+      display: flex;
+      gap: 1.5rem;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    .countdown-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      min-width: 70px;
+    }
+
+    .countdown-item .number {
+      font-size: clamp(2.5rem, 8vw, 4.5rem);
+      font-weight: 700;
+      line-height: 1;
+      color: #fff;
+      text-shadow: 0 0 20px rgba(200, 0, 0, 0.3);
+    }
+
+    .countdown-item .label {
+      font-size: 0.7rem;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: #555;
+      margin-top: 0.3rem;
+    }
+
+    .separator {
+      font-size: clamp(2rem, 6vw, 3.5rem);
+      font-weight: 700;
+      color: #333;
+      align-self: flex-start;
+      padding-top: 0.15em;
+    }
+
+    /* Social links */
+    .socials {
+      display: flex;
+      gap: 2rem;
+      margin-top: 1rem;
+    }
+
+    .socials a {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 48px;
+      height: 48px;
+      border: 1px solid #333;
+      border-radius: 50%;
+      color: #aaa;
+      text-decoration: none;
+      transition: all 0.3s ease;
+    }
+
+    .socials a:hover {
+      color: #fff;
+      border-color: #fff;
+      box-shadow: 0 0 15px rgba(255,255,255,0.15);
+      transform: scale(1.1);
+    }
+
+    .socials svg {
+      width: 22px;
+      height: 22px;
+      fill: currentColor;
+    }
+
+    /* released state */
+    .released-msg {
+      display: none;
+      font-size: clamp(1.2rem, 4vw, 2rem);
+      font-weight: 700;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: #c00;
+      text-shadow: 0 0 30px rgba(200, 0, 0, 0.5);
+      animation: pulse 2s ease-in-out infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.6; }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="logo">
+      <img src="logo.png" alt="Indheo">
+    </div>
+
+    <p class="tagline">New single — March 1, 2026</p>
+
+    <div class="countdown" id="countdown">
+      <div class="countdown-item">
+        <span class="number" id="days">00</span>
+        <span class="label">Days</span>
+      </div>
+      <span class="separator">:</span>
+      <div class="countdown-item">
+        <span class="number" id="hours">00</span>
+        <span class="label">Hours</span>
+      </div>
+      <span class="separator">:</span>
+      <div class="countdown-item">
+        <span class="number" id="minutes">00</span>
+        <span class="label">Min</span>
+      </div>
+      <span class="separator">:</span>
+      <div class="countdown-item">
+        <span class="number" id="seconds">00</span>
+        <span class="label">Sec</span>
+      </div>
+    </div>
+
+    <p class="released-msg" id="released">OUT NOW!</p>
+
+    <div class="socials">
+      <!-- Spotify -->
+      <a href="https://open.spotify.com/" target="_blank" rel="noopener" aria-label="Spotify">
+        <svg viewBox="0 0 24 24"><path d="M12 0C5.4 0 0 5.4 0 12s5.4 12 12 12 12-5.4 12-12S18.66 0 12 0zm5.521 17.34c-.24.359-.66.48-1.021.24-2.82-1.74-6.36-2.101-10.561-1.141-.418.122-.779-.179-.899-.539-.12-.421.18-.78.54-.9 4.56-1.021 8.52-.6 11.64 1.32.42.18.479.659.301 1.02zm1.44-3.3c-.301.42-.841.6-1.262.3-3.239-1.98-8.159-2.58-11.939-1.38-.479.12-1.02-.12-1.14-.6-.12-.48.12-1.021.6-1.141C9.6 9.9 15 10.561 18.72 12.84c.361.181.54.78.241 1.2zm.12-3.36C15.24 8.4 8.82 8.16 5.16 9.301c-.6.179-1.2-.181-1.38-.721-.18-.601.18-1.2.72-1.381 4.26-1.26 11.28-1.02 15.721 1.621.539.3.719 1.02.419 1.56-.299.421-1.02.599-1.559.3z"/></svg>
+      </a>
+      <!-- Instagram -->
+      <a href="https://instagram.com/" target="_blank" rel="noopener" aria-label="Instagram">
+        <svg viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg>
+      </a>
+      <!-- Facebook -->
+      <a href="https://facebook.com/" target="_blank" rel="noopener" aria-label="Facebook">
+        <svg viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+      </a>
+    </div>
+  </div>
+
+  <script>
+    const launchDate = new Date('2026-03-01T00:00:00').getTime();
+
+    function updateCountdown() {
+      const now = Date.now();
+      const diff = launchDate - now;
+
+      if (diff <= 0) {
+        document.getElementById('countdown').style.display = 'none';
+        document.querySelector('.tagline').style.display = 'none';
+        document.getElementById('released').style.display = 'block';
+        return;
+      }
+
+      const d = Math.floor(diff / (1000 * 60 * 60 * 24));
+      const h = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+      const m = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+      const s = Math.floor((diff % (1000 * 60)) / 1000);
+
+      document.getElementById('days').textContent = String(d).padStart(2, '0');
+      document.getElementById('hours').textContent = String(h).padStart(2, '0');
+      document.getElementById('minutes').textContent = String(m).padStart(2, '0');
+      document.getElementById('seconds').textContent = String(s).padStart(2, '0');
+    }
+
+    updateCountdown();
+    setInterval(updateCountdown, 1000);
+  </script>
+</body>
+</html>
