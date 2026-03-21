@@ -145,6 +145,39 @@
       0%, 100% { opacity: 1; }
       50% { opacity: 0.6; }
     }
+
+    /* Player */
+    .player {
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      gap: 1.5rem;
+      margin-top: 0.5rem;
+    }
+
+    .player.visible {
+      display: flex;
+    }
+
+    .player .single-cover {
+      width: min(280px, 70vw);
+      height: auto;
+      border-radius: 8px;
+      box-shadow: 0 0 40px rgba(200, 0, 0, 0.25), 0 4px 20px rgba(0,0,0,0.6);
+    }
+
+    .player .track-title {
+      font-size: clamp(0.85rem, 2.5vw, 1.1rem);
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: #aaa;
+    }
+
+    .player audio {
+      width: min(320px, 80vw);
+      height: 42px;
+      filter: invert(1) hue-rotate(180deg) brightness(0.8);
+    }
   </style>
 </head>
 <body>
@@ -179,6 +212,15 @@
 
     <p class="released-msg" id="released">OUT NOW!</p>
 
+    <div class="player" id="player">
+      <img src="fireescape_logo.jpeg" alt="Fire Escape — Single Cover" class="single-cover">
+      <span class="track-title">Fire Escape</span>
+      <audio controls controlsList="nodownload" preload="metadata" oncontextmenu="return false;">
+        <source src="Indheo - Fire Escape - MASTER.mp3" type="audio/mpeg">
+        Your browser does not support the audio element.
+      </audio>
+    </div>
+
     <div class="socials">
       <!-- Spotify -->
       <a href="https://open.spotify.com/artist/1ZWVSp6X5l2NZZfCNJReJ1?si=38cOSVJMSluT13tufyuQ5Q" target="_blank" rel="noopener" aria-label="Spotify">
@@ -206,6 +248,7 @@
         document.getElementById('countdown').style.display = 'none';
         document.querySelector('.tagline').style.display = 'none';
         document.getElementById('released').style.display = 'block';
+        document.getElementById('player').classList.add('visible');
         return;
       }
 
